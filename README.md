@@ -1,4 +1,6 @@
-CorpusTools
-===========
+CorpusToolkit
+=============
 
-The toolset of corpus processing
+The toolkit of corpus processing related tools.
+ - tmx2bitext
+ - bitext2tmx
