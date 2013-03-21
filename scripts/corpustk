@@ -50,7 +50,7 @@ def main(argv):
         print >> sys.stderr, "Invalid command: {}".format(command)
     else:
         sub_argv = argv[1:]
-        modulename = 'scripts.' + command
+        modulename = 'corpustoolkit.' + command
         __import__(modulename)
         module = sys.modules[modulename]
         sys.exit(module.main(sub_argv))
