@@ -84,20 +84,24 @@ class TMXParser(object):
         self.parser.CharacterDataHandler = self.char_data_handler
 
 
-    def set_output_func(self, func):
-        """Set the output function."""
+    def set_output_callback(self, func):
+        """Set the output callback function."""
         self.output_func = func
 
 
     def parse_file(self, filename):
-        """Expat parser callback function."""
+        """Expat parser file function.
+
+        Return 0 if succeed, else return error code.
+        """
         # Open the tmx file as file object. Don't specify the encoding.
         # ParseFile only need a file object with read(nbytes) method.
         # So we can use ParseFile read the xml with encoding either UTF-8 or UTF-16.
         try:
-            logging.info("Open the file: {}".format(filename))
+            logging.debug("Open the file: {}".format(filename))
             fp = open(filename)
         except IOError as e:
+            logging.debug("Failed to open.")
             logging.error(e)
             return e.errno
 
@@ -112,6 +116,7 @@ class TMXParser(object):
             fp.close()
 
         logging.info("Parsing completed.")
+        return 0
 
 
     def start_element_handler(self, name, attributes):
