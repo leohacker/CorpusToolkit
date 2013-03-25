@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # License: FreeBSD License or The BSD 2-Clause License
@@ -29,33 +28,23 @@
 
 # Author:   Leo Jiang <leo.jiang.dev@gmail.com>
 
-"""The entry module of corpustool.
+# pylint: disable=I0011,C0301
 
-corpustool is the set of corpus processing related tools.
-
-Usage:
-$ corpustool command command-arguments
-
-Note: update the bash completion script along when adding new command.
 """
+Predicate Module: Sentences Ratio
+"""
+def validate(step):
+    return True
 
-import sys
+def predicate(source, target, constraint):
+    """Return True if the sentences ratio is beyond the threshold.
 
-COMMANDS = ["tmx2bitext", "bitext2tmx",
-            "corpusclean"]
+    sentences ratio = source length / target length or target length / source length
 
-def main(argv):
-    """read the command from CLI then dispatch the arguments to real program."""
-    command = argv[1]
-    if command not in COMMANDS:
-        print >> sys.stderr, "Invalid command: {}".format(command)
-    else:
-        sub_argv = argv[1:]
-        modulename = 'corpustoolkit.' + command
-        __import__(modulename)
-        module = sys.modules[modulename]
-        sys.exit(module.main(sub_argv))
+    The threshold of ratio in moses system is 9.
 
-if __name__ == '__main__':
-    sys.exit(main(sys.argv))
-
+    """
+    len_s = len(source.split(' '))
+    len_t = len(target.split(' '))
+    ratio = (float(len_s) / len_t) if len_s > len_t else (float(len_t) / len_s)
+    return True if ratio > constraint["ratio"] else False

@@ -103,7 +103,7 @@ class CorpusCleanConfig(object):
 
         ret = True
         for step in self._steps:
-            module_name = "corpustools.clean." + step["name"]
+            module_name = "corpustoolkit.cleantools." + step["name"]
             try:
                 __import__(module_name)
             except ImportError as e:

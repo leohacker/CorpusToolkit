@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # License: FreeBSD License or The BSD 2-Clause License
@@ -29,33 +28,17 @@
 
 # Author:   Leo Jiang <leo.jiang.dev@gmail.com>
 
-"""The entry module of corpustool.
+# pylint: disable=I0011,C0301
 
-corpustool is the set of corpus processing related tools.
-
-Usage:
-$ corpustool command command-arguments
-
-Note: update the bash completion script along when adding new command.
+"""
+Predicate Module: Length Distance
 """
 
-import sys
+def validate(step):
+    return True
 
-COMMANDS = ["tmx2bitext", "bitext2tmx",
-            "corpusclean"]
-
-def main(argv):
-    """read the command from CLI then dispatch the arguments to real program."""
-    command = argv[1]
-    if command not in COMMANDS:
-        print >> sys.stderr, "Invalid command: {}".format(command)
-    else:
-        sub_argv = argv[1:]
-        modulename = 'corpustoolkit.' + command
-        __import__(modulename)
-        module = sys.modules[modulename]
-        sys.exit(module.main(sub_argv))
-
-if __name__ == '__main__':
-    sys.exit(main(sys.argv))
-
+def predicate(source, target, constraint):
+    """Return True if the distance between source and target is beyond the limit."""
+    len_s = len(source.split(' '))
+    len_t = len(target.split(' '))
+    return True if abs(len_s - len_t) > constraint["diff"] else False

@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 # License: FreeBSD License or The BSD 2-Clause License
@@ -29,33 +28,33 @@
 
 # Author:   Leo Jiang <leo.jiang.dev@gmail.com>
 
-"""The entry module of corpustool.
+# pylint: disable=I0011,C0301
 
-corpustool is the set of corpus processing related tools.
-
-Usage:
-$ corpustool command command-arguments
-
-Note: update the bash completion script along when adding new command.
+"""
+Predicate Module: Length Limit
 """
 
-import sys
+def validate(step):
+    return True
 
-COMMANDS = ["tmx2bitext", "bitext2tmx",
-            "corpusclean"]
+def predicate(source, target, constraint):
+    """
+    Return True if the length of source and/or target is beyond the limit.
 
-def main(argv):
-    """read the command from CLI then dispatch the arguments to real program."""
-    command = argv[1]
-    if command not in COMMANDS:
-        print >> sys.stderr, "Invalid command: {}".format(command)
-    else:
-        sub_argv = argv[1:]
-        modulename = 'corpustoolkit.' + command
-        __import__(modulename)
-        module = sys.modules[modulename]
-        sys.exit(module.main(sub_argv))
+    The length limit for GIZA++ in moses is 100 tokens.
 
-if __name__ == '__main__':
-    sys.exit(main(sys.argv))
+    """
 
+    if "source" in constraint:
+        len_s = len(source.split(' '))
+        (low, high) = tuple(constraint["source"])
+        if len_s < low or len_s > high:
+            return True
+
+    if "target" in constraint:
+        len_t = len(target.split(' '))
+        (low, high) = tuple(constraint["target"])
+        if len_t < low or len_t > high:
+            return True
+
+    return False
