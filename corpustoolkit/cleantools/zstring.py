@@ -63,7 +63,7 @@ ESCAPESEQ_TABLE = {     # zstring1.5
     # ur"^S" : u"\u2211",     # ∑ N-ARY SUMMATION summation sign
 
     ur"#{endl}"     : u"\u000A", # \n
-    ur"#{tab}"      : u"\u0009", # \t  horizontal tabulation
+    ur"#{tab}"      : u" ",      # \t  horizontal tabulation => ' '
     ur"#{cr}"       : u"\u000D", # \r  carriage return
     ur"#{lf}"       : u"\u000A", # \n  line feed
     ur"#{quot}"     : u"\u0022", # "   U+0022  quotation mark = APL quote
