@@ -59,12 +59,36 @@ def main(argv):
     filepath = os.path.expanduser(argv[1])
     filepath = os.path.abspath(filepath)
 
+    validateFilepath(filepath)
+    # TODO: check the content of the input bitext file.
+    validateContent(filepath)
+    bi2tmx(filepath)
+
+def validateFilepath(filepath):
+    """Check whether the filepath is valid."""
+
     if not os.path.exists(filepath):
-        print >> sys.stderr, "File not exists."
+        print >> sys.stderr, "File not exists: " + filepath
+        sys.exit(errno.ENOENT)
+
+    if not os.path.isfile(filepath):
+        print >> sys.stderr, "Please specify a bitext file as input."
         sys.exit(errno.ENOENT)
 
     namelist = os.path.basename(filepath).split('.')
+    if len(namelist) != 3:
+        print >> sys.stderr, "The input bitext file should be named like 'resource.en-zh.bitext'."
+        sys.exit(errno.ENOENT)
+
+    if namelist[2] != "bitext":
+        print >> sys.stderr, "The input bitext file should be named like 'resource.en-zh.bitext'."
+        sys.exit(errno.ENOENT)
+
     langpair = namelist[1]
+
+    if (len(langpair) != 5) and (langpair[2] != '-'):
+        print >> sys.stderr, "Invalid language pairs. Should be in form of 'en-zh'."
+        sys.exit(errno.ENOENT)
 
     source_lang = langpair.split('-')[0]
     target_lang = langpair.split('-')[1]
@@ -73,10 +97,12 @@ def main(argv):
         print >> sys.stderr, "Invalid language ID."
         sys.exit(errno.EINVAL)
 
-    bi2tmx(filepath)
+def valdiateContent(filepath):
+    pass
 
 def bi2tmx(filepath):
     """convert the bitext file to tmx file."""
+
     dirpath = os.path.dirname(filepath)
     filename = os.path.basename(filepath)
     namelist = filename.split('.')
